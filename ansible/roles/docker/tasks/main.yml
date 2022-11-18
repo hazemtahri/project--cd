@@ -1,0 +1,19 @@
+---
+# tasks file for docker
+- name: create image docker
+  docker_image: 
+    name: angular
+    build:
+     path: /var/lib/jenkins/workspace/vvv
+     pull: no
+    source: build
+    state: present
+    force_source: true
+- name: run container docker
+  docker_container:
+    name: angular_container
+    image: angular:latest
+    state: started
+    recreate: true
+    ports:
+     - "4200:80"
