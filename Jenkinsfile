@@ -9,35 +9,29 @@ pipeline {
 		stage('Git ') {
             steps {
                 echo 'pulling Main Project from git ...';
-                git branch: 'main', credentialsId: 'git', url: 'https://github.com/amineturki/projet-cd.git'            }
+                git branch: 'main', credentialsId: 'git', url: 'https://github.com/hazemtahri/projet--cd.git'            }
         }
-    
-  /*     stage('Docker Build and Push') {
-       steps {
-         withDockerRegistry([credentialsId: "docker-hub", url: ""]) {
-           sh 'sudo docker build -t amineturki/cd:latest .'
-           sh 'docker push amineturki/cd:latest '
-         }
-       }
-     }
-	 */
-	 	stage('Ansible playbook for test') {
-            steps {
-                sh 'ansible-playbook playbook-test.yml'
-                         }
-        }
-     	
     
 
 
  
 
-stage('Ansible playbook for building the app') {
+stage('Ansible App build ') {
+            steps {
+                
+                sh 'ansible-playbook ansible/build.yml -i ansible/inventory/hosts.yml'
+                         }
+        }
+
+	   stage('Ansible Docker build and Start Container') {
             steps {
                 sh 'ansible-playbook ansible/docker.yml -i ansible/inventory/hosts.yml'
                          }
         }
-
-	 
+        stage('Ansible Tag Push to Dockerhub ') {
+            steps {
+                sh 'ansible-playbook ansible/docker-registry.yml -i ansible/inventory/hosts.yml'
+                         }
+        }
 	}
 	}
