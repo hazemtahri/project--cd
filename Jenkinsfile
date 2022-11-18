@@ -9,7 +9,7 @@ pipeline {
 		stage('Git ') {
             steps {
                 echo 'pulling Main Project from git ...';
-                git branch: 'main', credentialsId: 'git', url: 'https://github.com/hazemtahri/projet--cd.git'            }
+                git branch: 'main', credentialsId: 'git', url: 'https://github.com/hazemtahri/project--cd.git'            }
         }
     
 
